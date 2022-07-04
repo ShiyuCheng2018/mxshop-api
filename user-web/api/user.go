@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/ShiyuCheng2018/mxshop-api/user-web/global/responses"
 	"github.com/ShiyuCheng2018/mxshop-api/user-web/proto"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -11,6 +12,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 	"net/http"
+	"time"
 )
 
 func HandleGrpcErrorToHttpError(err error, c *gin.Context) {
@@ -69,16 +71,17 @@ func GetUserList(ctx *gin.Context) {
 
 	result := make([]interface{}, 0)
 	for _, val := range response.Data {
-		data := make(map[string]interface{})
+		user := responses.UserInfoResponse{
+			Id:       val.Id,
+			Name:     val.Name,
+			Gender:   val.Gender,
+			Birthday: responses.JsonTime(time.Unix(int64(val.Birthday), 0)),
+			Nickname: val.Nickname,
+			Mobile:   val.Mobile,
+			Role:     val.Role,
+		}
 
-		data["id"] = val.Id
-		data["name"] = val.Name
-		data["nickname"] = val.Nickname
-		data["birthday"] = val.Birthday
-		data["gender"] = val.Gender
-		data["mobile"] = val.Mobile
-		data["role"] = val.Role
-		result = append(result, data)
+		result = append(result, user)
 	}
 
 	ctx.JSON(http.StatusOK, result)
