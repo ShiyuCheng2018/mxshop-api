@@ -7,7 +7,7 @@ import (
 
 func Routers() *gin.Engine {
 	router := gin.Default()
-	apiGroup := router.Group("./v1")
+	apiGroup := router.Group("/u/v1")
 	userRouter.InitUserRouter(apiGroup)
 
 	return router
