@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/ShiyuCheng2018/mxshop-api/user-web/global"
 	"github.com/ShiyuCheng2018/mxshop-api/user-web/global/responses"
 	"github.com/ShiyuCheng2018/mxshop-api/user-web/proto"
 	"github.com/gin-gonic/gin"
@@ -46,11 +47,8 @@ func HandleGrpcErrorToHttpError(err error, c *gin.Context) {
 }
 
 func GetUserList(ctx *gin.Context) {
-	ip := "127.0.0.1"
-	port := 50051
-
 	// connect to client grpc server
-	userConnection, err := grpc.Dial(fmt.Sprintf("%s:%d", ip, port), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	userConnection, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host, global.ServerConfig.UserSrvInfo.Port), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		zap.S().Errorw("[GetUserList]: Failed to connect")
 		HandleGrpcErrorToHttpError(err, ctx)

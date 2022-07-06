@@ -2,21 +2,25 @@ package main
 
 import (
 	"fmt"
+	"github.com/ShiyuCheng2018/mxshop-api/user-web/global"
 	"github.com/ShiyuCheng2018/mxshop-api/user-web/initializer"
 	"go.uber.org/zap"
 )
 
 func main() {
-	port := 8021
 
 	// initialize Logger
 	initializer.InitLogger()
+
+	// initialize global config
+	initializer.InitConfig()
+
 	// initialize Routers
 	Router := initializer.Routers()
 
-	zap.S().Infof("[Runing Server]: port: %d", port)
+	zap.S().Infof("[Runing Server]: port: %d", global.ServerConfig.Port)
 
-	err := Router.Run(fmt.Sprintf(":%d", port))
+	err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port))
 	if err != nil {
 		zap.S().Panic("[Failed Server]: ", err.Error())
 	}
