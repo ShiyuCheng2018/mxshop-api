@@ -18,6 +18,11 @@ func main() {
 	// initialize Routers
 	Router := initializer.Routers()
 
+	// initializer translator
+	if err := initializer.InitTrans("en"); err != nil {
+		panic(err)
+	}
+
 	zap.S().Infof("[Runing Server]: port: %d", global.ServerConfig.Port)
 
 	err := Router.Run(fmt.Sprintf(":%d", global.ServerConfig.Port))

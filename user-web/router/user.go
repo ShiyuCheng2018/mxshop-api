@@ -11,5 +11,6 @@ func InitUserRouter(Router *gin.RouterGroup) {
 	zap.S().Info("[Router]: Configuring user router")
 	{
 		UserRouter.GET("list", api.GetUserList)
+		UserRouter.POST("pwd_login", api.PasswordLogin)
 	}
 }
